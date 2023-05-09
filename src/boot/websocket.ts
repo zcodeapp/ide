@@ -2,7 +2,6 @@ import { boot } from 'quasar/wrappers';
 import WebSocket from 'src/plugins/websocket/websocket';
 import { App } from 'vue';
 import { websocketStore } from 'src/stores/websocket-store';
-import { storeToRefs } from 'pinia'
 import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
 
 export default boot(async (vue) => {

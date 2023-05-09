@@ -44,10 +44,10 @@ export default defineComponent({
   },
   data() {
     const store = websocketStore();
-    const { connected, isConnecting, error, host, port } = storeToRefs(store);
+    const { connected, connecting, error, host, port } = storeToRefs(store);
     return {
       connected: connected,
-      connecting: isConnecting,
+      connecting: connecting,
       error: error,
       host: host,
       port: port,

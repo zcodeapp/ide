@@ -1,4 +1,4 @@
-import { IWebSocket, WebSocketStatus } from "./websocket.interface";
+import { IWebSocket, WebSocketStatus } from './websocket.interface';
 import { websocketStore } from 'src/stores/websocket-store';
 
 class WebSocket implements IWebSocket {

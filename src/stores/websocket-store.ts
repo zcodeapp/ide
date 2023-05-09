@@ -9,11 +9,6 @@ export const websocketStore = defineStore('websocket', {
     host: '',
     port: '',
   }),
-  getters: {
-    isConnected: (state) => state.connected,
-    isConnecting: (state) => state.connecting,
-    haveError: (state) => state.error,
-  },
   actions: {
     change(state: WebSocketStatus) {
         this.connected = state == WebSocketStatus.IS_CONNECTED

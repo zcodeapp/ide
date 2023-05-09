@@ -45,7 +45,6 @@
   <script lang="ts">
   import { defineComponent } from 'vue';
   import { websocketStore } from 'src/stores/websocket-store';
-import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
   
   export default defineComponent({
     name: 'ServerConfigurePage',

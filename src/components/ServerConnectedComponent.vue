@@ -42,10 +42,18 @@ export default defineComponent({
   },
   watch: {
     error() {
-      setTimeout(() => {
-        const store = websocketStore();
-        store.change(WebSocketStatus.NOT_CONNECTED)
-      }, 5000)
+      clearTimeout(this.timeout);
+      if (this.error) {
+        this.timeout = setTimeout(() => {
+          const store = websocketStore();
+          store.change(WebSocketStatus.NOT_CONNECTED)
+        }, 5000);
+      }
+    }
+  },
+  data() {
+    return {
+      timeout: {} as NodeJS.Timeout
     }
   }
 });
