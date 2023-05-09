@@ -13,14 +13,23 @@
         port
       }) }}
     </div>
-    <div v-if="!connected && !connecting">
+    <div v-if="!connected && !connecting && !error">
       <q-icon name="wifi_off" />
       {{ $t('not_connected') }}
+    </div>
+    <div v-if="error">
+      <q-icon name="wifi_off" />
+      {{ $t('error_connecting', {
+        host,
+        port
+      }) }}
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { websocketStore } from 'src/stores/websocket-store';
+import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
 
 export default defineComponent({
   name: 'ServerConnectedComponent',
@@ -29,6 +38,15 @@ export default defineComponent({
     port: String,
     connected: Boolean,
     connecting: Boolean,
+    error: Boolean,
   },
+  watch: {
+    error() {
+      setTimeout(() => {
+        const store = websocketStore();
+        store.change(WebSocketStatus.NOT_CONNECTED)
+      }, 5000)
+    }
+  }
 });
 </script>

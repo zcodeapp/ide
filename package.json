@@ -5,6 +5,7 @@
   "productName": "Zcode App IDE",
   "author": "",
   "private": true,
+  "types": "src/shims-vue.d.ts",
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
