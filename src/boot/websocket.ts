@@ -15,6 +15,7 @@ export default boot(async (vue) => {
         import.meta.env.VITE_SERVER_PORT
       );
       app.config.globalProperties.$websocket = WebSocket(
+        store,
         store.host,
         store.port,
       );

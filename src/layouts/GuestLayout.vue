@@ -32,7 +32,6 @@ import { defineComponent } from 'vue';
 import ServerConnectedComponent from '../components/ServerConnectedComponent.vue';
 import VersionComponent from '../components/VersionComponent.vue';
 import LanguageComponent from '../components/LanguageComponent.vue';
-import { websocketStore } from 'src/stores/websocket-store';
 import { storeToRefs } from 'pinia';
 
 export default defineComponent({
@@ -43,8 +42,7 @@ export default defineComponent({
     LanguageComponent,
   },
   data() {
-    const store = websocketStore();
-    const { connected, connecting, error, host, port } = storeToRefs(store);
+    const { connected, connecting, error, host, port } = storeToRefs(this.$websocketStore);
     return {
       connected: connected,
       connecting: connecting,

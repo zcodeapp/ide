@@ -4,7 +4,9 @@
 
 // Mocks all files ending in `.vue` showing them as plain Vue instances
 import Vue from 'vue';
-import { IWebSocket } from "./plugins/websocket/websocket.interface";
+import { IWebSocket } from './plugins/websocket/websocket.interface';
+import { Store } from 'pinia';
+import { IWebSocketStoreActions, IWebSocketStoreStates } from './stores/websocket-store';
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue';
@@ -14,7 +16,8 @@ declare module '*.vue' {
 
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
-    $websocket: IWebSocket
+    $websocket: IWebSocket;
+    $websocketStore: Store<'websocket', IWebSocketStoreStates, {}, IWebSocketStoreActions>;
   }
 }
 

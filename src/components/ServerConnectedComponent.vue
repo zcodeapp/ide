@@ -28,7 +28,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { websocketStore } from 'src/stores/websocket-store';
 import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
 
 export default defineComponent({
@@ -45,8 +44,7 @@ export default defineComponent({
       clearTimeout(this.timeout);
       if (this.error) {
         this.timeout = setTimeout(() => {
-          const store = websocketStore();
-          store.change(WebSocketStatus.NOT_CONNECTED)
+          this.$websocketStore.change(WebSocketStatus.NOT_CONNECTED)
         }, 5000);
       }
     }

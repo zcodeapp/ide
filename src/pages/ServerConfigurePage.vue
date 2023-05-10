@@ -44,7 +44,6 @@
   
   <script lang="ts">
   import { defineComponent } from 'vue';
-  import { websocketStore } from 'src/stores/websocket-store';
   
   export default defineComponent({
     name: 'ServerConfigurePage',
@@ -54,31 +53,23 @@
     },
     methods: {
       updateData() {
-        this.lockFields();
-        const store = websocketStore();
-        store.configure(this.data_address, String(this.data_port));
+        this.lock_fields = true;
+        this.$websocketStore.configure(this.data_address, String(this.data_port));
         this.$websocket.connect(
           () => {
-            this.unlockFields();
+            this.lock_fields = false;
           },
           () => {
-            this.unlockFields();
+            this.lock_fields = false;
           }
         )
-      },
-      lockFields() {
-        this.lock_fields = true;
-      },
-      unlockFields() {
-        this.lock_fields = false;
       }
     },
     data() {
-      const store = websocketStore();
       return {
         lock_fields: false,
-        data_address: store.host,
-        data_port: Number(store.port)
+        data_address: this.$websocketStore.host,
+        data_port: Number(this.$websocketStore.port)
       }
     },
   });

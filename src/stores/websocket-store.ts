@@ -1,7 +1,20 @@
 import { defineStore } from 'pinia';
 import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
 
-export const websocketStore = defineStore('websocket', {
+export interface IWebSocketStoreStates {
+  connected: boolean;
+  connecting: boolean;
+  error: boolean;
+  host: string;
+  port: string;
+}
+
+export interface IWebSocketStoreActions {
+  change(state: WebSocketStatus): void;
+  configure(host: string, port: string): void;
+}
+
+export const websocketStore = defineStore<'websocket', IWebSocketStoreStates, NonNullable<unknown>, IWebSocketStoreActions>('websocket', {
   state: () => ({
     connected: false,
     connecting: false,

@@ -1,23 +1,24 @@
+import { Store } from 'pinia';
 import { IWebSocket, WebSocketStatus } from './websocket.interface';
-import { websocketStore } from 'src/stores/websocket-store';
+import { IWebSocketStoreActions, IWebSocketStoreStates } from 'src/stores/websocket-store';
 
 class WebSocket implements IWebSocket {
 
-  private store = websocketStore();
-
-  constructor(
-    public host?: string | undefined,
-    public port?: string | undefined,
-  ){}
-
   static instance: IWebSocket;
 
+  constructor(
+    private store: Store<'websocket', IWebSocketStoreStates, NonNullable<unknown>, IWebSocketStoreActions>,
+    public host?: string,
+    public port?: string,
+  ){}
+
   static getInstance(
-    host?: string | undefined,
-    port?: string | undefined,
+    store: Store<'websocket', IWebSocketStoreStates, NonNullable<unknown>, IWebSocketStoreActions>,
+    host?: string,
+    port?: string,
   ): IWebSocket {
     if (!WebSocket.instance) {
-      WebSocket.instance = new WebSocket(host, port);
+      WebSocket.instance = new WebSocket(store, host, port);
     }
     return WebSocket.instance
   }
