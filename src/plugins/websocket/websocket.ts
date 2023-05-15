@@ -1,28 +1,31 @@
-import { Store } from 'pinia';
 import { IVersion, IWebSocket, IWebSocketOptions } from './websocket.interface';
-import { IWebSocketStoreActions, IWebSocketStoreStates } from 'src/stores/websocket-store';
-import { Socket, io } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 import { Md5 } from 'ts-md5';
 
 class WebSocket implements IWebSocket {
 
-  private instanceIo?: Socket;
-  private instanceSignature?: string;
+  private instanceIo?: {
+    hash: string,
+    instance: Socket
+  };
   static instance?: IWebSocket;
 
   constructor(
-    private store: Store<'websocket', IWebSocketStoreStates, NonNullable<unknown>, IWebSocketStoreActions>,
     public host: string,
     public port: string,
+    private ioFactory: (uri: string) => Socket
   ){}
 
   static getInstance(
-    store: Store<'websocket', IWebSocketStoreStates, NonNullable<unknown>, IWebSocketStoreActions>,
-    host: string,
-    port: string,
+    host?: string,
+    port?: string,
+    ioFactory?: (uri: string) => Socket,
   ): IWebSocket {
     if (!WebSocket.instance) {
-      WebSocket.instance = new WebSocket(store, host, port);
+      if (!host || !port || !ioFactory) {
+        throw new Error('To get websocket instance configure host, port and ioFactory');
+      }
+      WebSocket.instance = new WebSocket(host, port, ioFactory);
     }
     return WebSocket.instance
   }
@@ -43,7 +46,7 @@ class WebSocket implements IWebSocket {
     await this.on('connect', async () => {
       await this.emit('version', (v: IVersion) => {
         if (success) success(v.version);
-      })
+      });
     });
     await this.on('connect_error', async (e: Error) => {
       await this.close();
@@ -59,31 +62,32 @@ class WebSocket implements IWebSocket {
   }
 
   async on<T>(event: string, callback: (...args: T[]) => void): Promise<void> {
-    if (this.instanceIo) {
-      this.instanceIo.on(event, callback);
+    if (this.instanceIo?.instance) {
+      this.instanceIo.instance.on(event, callback);
     }
   }
 
   async emit<T>(event: string, callback: (...args: T[]) => void): Promise<void> {
-    if (this.instanceIo) {
-      this.instanceIo.emit(event, callback);
+    if (this.instanceIo?.instance) {
+      this.instanceIo.instance.emit(event, callback);
     }
   }
 
   async close(): Promise<void> {
-    if (this.instanceIo) {
-      this.instanceIo.close();
+    if (this.instanceIo?.instance) {
+      this.instanceIo.instance.close();
       this.instanceIo = undefined;
-      this.instanceSignature = undefined;
     }
   }
 
   private getIo(): void {
-    const connection = `${this.host}:${this.port}`;
-    const hash = Md5.hashStr(connection);
-    if (!this.instanceIo || hash != this.instanceSignature) {
-      this.instanceSignature = hash;
-      this.instanceIo = io(connection);
+    const uri = `${this.host}:${this.port}`;
+    const hash = Md5.hashStr(uri);
+    if (!this.instanceIo?.instance || hash != this.instanceIo?.hash) {
+      this.instanceIo = {
+        hash,
+        instance: this.ioFactory(uri)
+      }
     }
   }
 }

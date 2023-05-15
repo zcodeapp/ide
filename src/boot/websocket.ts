@@ -3,6 +3,7 @@ import WebSocket from 'src/plugins/websocket/websocket';
 import { App } from 'vue';
 import { websocketStore } from 'src/stores/websocket-store';
 import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
+import { io } from 'socket.io-client';
 
 export default boot(async (vue) => {
 
@@ -15,9 +16,11 @@ export default boot(async (vue) => {
         import.meta.env.VITE_SERVER_PORT
       );
       app.config.globalProperties.$websocket = WebSocket(
-        store,
         store.host,
         store.port,
+        (uri) => {
+          return io(uri);
+        }
       );
     }
   }
