@@ -18,6 +18,8 @@ export interface IVersion {
 }
 
 export interface IWebSocket {
+  host: string;
+  port: string;
   connect(options?: IWebSocketOptions, success?: (version: string) => void, error?: (error: Error) => void): Promise<void>;
   on<T>(event: string, callback: (...args: T[]) => void): Promise<void>;
   emit<T>(event: string, callback: (...args: T[]) => void): Promise<void>;
