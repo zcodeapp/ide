@@ -13,7 +13,7 @@
                 :disable="lock_fields"
                 v-model="data_address"
                 :rules="[ 
-                  val => String(val).match(/^https?:\/\/[a-zA-Z0-9]+/g)?.length || $t('type_valid_address'),
+                  val => String(val).match(/^(http|https|ws)?:\/\/[a-zA-Z0-9]+/g)?.length || $t('type_valid_address'),
                   val => val && val.length > 0 || $t('type_something')
                 ]"
                 :label="$t('server_address_label')"
@@ -43,7 +43,8 @@
   </template>
   
   <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
+import { defineComponent } from 'vue';
   
   export default defineComponent({
     name: 'ServerConfigurePage',
@@ -52,14 +53,22 @@
       port: String
     },
     methods: {
-      updateData() {
+      async updateData() {
         this.lock_fields = true;
         this.$websocketStore.configure(this.data_address, String(this.data_port));
-        this.$websocket.connect(
-          () => {
+        this.$websocketStore.change(WebSocketStatus.IS_CONNECTING);
+        await this.$websocket.connect(
+          {
+            host: this.data_address,
+            port: String(this.data_port)
+          },
+          (version: string) => {
+            this.$websocketStore.change(WebSocketStatus.IS_CONNECTED);
+            this.$websocketStore.changeVersion(version);
             this.lock_fields = false;
           },
           () => {
+            this.$websocketStore.change(WebSocketStatus.HAVE_ERROR);
             this.lock_fields = false;
           }
         )

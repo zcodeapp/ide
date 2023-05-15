@@ -5,7 +5,7 @@ export default {
   version: 'Version: {version}',
   language: 'Language',
   zcode_title: 'ZCode App',
-  connected_on: 'Connected on {host}:{port}',
+  connected_on: 'Connected on {host}:{port} - Version: {version}',
   connecting: 'Connecting on {host}:{port}',
   not_connected: 'Not connected',
   error_connecting: 'Error on try connect {host}:{port}',

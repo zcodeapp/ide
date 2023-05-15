@@ -5,6 +5,13 @@ export enum WebSocketStatus {
   HAVE_ERROR = 3
 }
 
+export interface IWebSocketOptions {
+  host: string;
+  port: string;
+}
+
 export interface IWebSocket {
-  connect(success?: () => void, error?: () => void): void;
+  connect(options?: IWebSocketOptions, success?: (version: string) => void, error?: (error: Error) => void): Promise<void>;
+  on(event: string, callback: (...args: any[]) => void): Promise<void>;
+  emit(event: string, callback: (...args: any[]) => void): Promise<void>;
 }

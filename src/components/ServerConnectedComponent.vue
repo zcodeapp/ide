@@ -3,7 +3,8 @@
     <q-icon name="wifi" />
     {{ $t('connected_on', {
       host,
-      port
+      port,
+      version
     }) }}
   </div>
     <div v-if="connecting">
@@ -35,6 +36,7 @@ export default defineComponent({
   props: {
     host: String,
     port: String,
+    version: String,
     connected: Boolean,
     connecting: Boolean,
     error: Boolean,

@@ -19,6 +19,7 @@
           :error="error"
           :host="host"
           :port="port"
+          :version="version"
         />
         <q-space />
         <version-component />
@@ -42,13 +43,14 @@ export default defineComponent({
     LanguageComponent,
   },
   data() {
-    const { connected, connecting, error, host, port } = storeToRefs(this.$websocketStore);
+    const { connected, connecting, error, host, port, version } = storeToRefs(this.$websocketStore);
     return {
       connected: connected,
       connecting: connecting,
       error: error,
       host: host,
       port: port,
+      version: version,
     }
   }
 });
