@@ -10,8 +10,15 @@ export interface IWebSocketOptions {
   port: string;
 }
 
+export interface IVersion {
+  name: string;
+  version: string;
+  dependencies?: { [name: string]: string };
+  devDependencies?: { [name: string]: string };
+}
+
 export interface IWebSocket {
   connect(options?: IWebSocketOptions, success?: (version: string) => void, error?: (error: Error) => void): Promise<void>;
-  on(event: string, callback: (...args: any[]) => void): Promise<void>;
-  emit(event: string, callback: (...args: any[]) => void): Promise<void>;
+  on<T>(event: string, callback: (...args: T[]) => void): Promise<void>;
+  emit<T>(event: string, callback: (...args: T[]) => void): Promise<void>;
 }

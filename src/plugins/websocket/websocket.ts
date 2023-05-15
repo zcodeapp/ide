@@ -1,5 +1,5 @@
 import { Store } from 'pinia';
-import { IWebSocket, IWebSocketOptions, WebSocketStatus } from './websocket.interface';
+import { IVersion, IWebSocket, IWebSocketOptions } from './websocket.interface';
 import { IWebSocketStoreActions, IWebSocketStoreStates } from 'src/stores/websocket-store';
 import { Socket, io } from 'socket.io-client';
 import { Md5 } from 'ts-md5';
@@ -41,30 +41,30 @@ class WebSocket implements IWebSocket {
     this.getIo();
     
     await this.on('connect', async () => {
-      await this.emit('version', (v: any) => {
+      await this.emit('version', (v: IVersion) => {
         if (success) success(v.version);
       })
     });
-    await this.on('connect_error', async (e) => {
+    await this.on('connect_error', async (e: Error) => {
       await this.close();
       if (error) error(e);
     });
-    await this.on('reconnect_error', async (e) => {
+    await this.on('reconnect_error', async (e: Error) => {
       await this.close();
       if (error) error(e);
     });
-    await this.on('error', (e) => {
+    await this.on('error', (e: Error) => {
       if (error) error(e);
     });
   }
 
-  async on(event: string, callback: (...args: any[]) => void): Promise<void> {
+  async on<T>(event: string, callback: (...args: T[]) => void): Promise<void> {
     if (this.instanceIo) {
       this.instanceIo.on(event, callback);
     }
   }
 
-  async emit(event: string, callback: (...args: any[]) => void): Promise<void> {
+  async emit<T>(event: string, callback: (...args: T[]) => void): Promise<void> {
     if (this.instanceIo) {
       this.instanceIo.emit(event, callback);
     }

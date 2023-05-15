@@ -9,8 +9,9 @@ services:
 
   quasar_dev:
     image: zcodeapp/node
-    depends_on:
-      - node_cli
+    build:
+      context: ${PWD}
+      dockerfile: docker/node/Dockerfile
     entrypoint: /usr/local/bin/npx
     command: quasar dev --port 3000 --hostname 0.0.0.0
     volumes:
