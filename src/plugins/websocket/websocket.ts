@@ -3,10 +3,9 @@ import { Socket } from 'socket.io-client';
 import { Md5 } from 'ts-md5';
 
 export class WebSocket implements IWebSocket {
-
   private instanceIo?: {
-    hash: string,
-    instance: Socket
+    hash: string;
+    instance: Socket;
   };
   static instance?: IWebSocket;
 
@@ -14,35 +13,38 @@ export class WebSocket implements IWebSocket {
     public host: string,
     public port: string,
     private ioFactory: (uri: string) => Promise<Socket>
-  ){}
+  ) {}
 
   static getInstance(
     host?: string,
     port?: string,
-    ioFactory?: (uri: string) => Promise<Socket>,
+    ioFactory?: (uri: string) => Promise<Socket>
   ): IWebSocket {
     if (!WebSocket.instance) {
       if (!host || !port || !ioFactory) {
-        throw new Error('To get websocket instance configure host, port and ioFactory');
+        throw new Error(
+          'To get websocket instance configure host, port and ioFactory'
+        );
       }
       WebSocket.instance = new WebSocket(host, port, ioFactory);
     }
-    return WebSocket.instance
+    return WebSocket.instance;
   }
 
-  async connect(options?: IWebSocketOptions, success?: (version: string) => void, error?: (error: Error) => void): Promise<void> {
+  async connect(
+    options?: IWebSocketOptions,
+    success?: (version: string) => void,
+    error?: (error: Error) => void
+  ): Promise<void> {
     if (options) {
-      const {
-        host,
-        port
-      } = options;
+      const { host, port } = options;
 
       this.host = host;
       this.port = port;
     }
 
     await this.getIo();
-    
+
     await this.on('connect', async () => {
       await this.emit('version', (v: IVersion) => {
         if (success) success(v.version);
@@ -67,7 +69,10 @@ export class WebSocket implements IWebSocket {
     }
   }
 
-  async emit<T>(event: string, callback: (...args: T[]) => void): Promise<void> {
+  async emit<T>(
+    event: string,
+    callback: (...args: T[]) => void
+  ): Promise<void> {
     if (this.instanceIo?.instance) {
       this.instanceIo.instance.emit(event, callback);
     }
@@ -86,10 +91,10 @@ export class WebSocket implements IWebSocket {
     if (!this.instanceIo?.instance || hash != this.instanceIo?.hash) {
       this.instanceIo = {
         hash,
-        instance: await this.ioFactory(uri)
-      }
+        instance: await this.ioFactory(uri),
+      };
     }
   }
 }
 
-export default WebSocket.getInstance
+export default WebSocket.getInstance;

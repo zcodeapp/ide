@@ -20,8 +20,8 @@ export default defineConfig({
         'src/**/*.vue',
         'src/i18n/**',
         'test/vitest/setup-file.ts',
-      ]
-    }
+      ],
+    },
   },
   plugins: [
     vue({

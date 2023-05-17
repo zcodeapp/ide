@@ -16,5 +16,5 @@ export default {
   server_address_label: 'Server address',
   server_port_label: 'Server port',
   server_port_min: '80',
-  server_port_min_label: 'Minimal port is {port}'
+  server_port_min_label: 'Minimal port is {port}',
 };

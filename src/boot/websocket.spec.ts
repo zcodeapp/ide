@@ -12,28 +12,26 @@ vi.mock('stores/websocket-store', () => {
         configure: () => null,
         change: () => null,
         host,
-        port
-      }
-    }
+        port,
+      };
+    },
   };
 });
 
 describe('boot/websocket', () => {
   it('test boot', async () => {
     const globalProperties = {};
-    await boot(
-      {
-        app: {
-          use: (callback) => {
-            callback.install({
-              config: {
-                globalProperties
-              }
-            });
-          }
-        }
-      } as any
-    );
+    await boot({
+      app: {
+        use: (callback) => {
+          callback.install({
+            config: {
+              globalProperties,
+            },
+          });
+        },
+      },
+    } as any);
     expect(globalProperties.$websocket.host).toBe(host);
     expect(globalProperties.$websocket.port).toBe(port);
     expect(globalProperties.$websocket.connect.name).toBe('connect');

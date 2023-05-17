@@ -24,18 +24,19 @@ export default defineComponent({
       locale,
       localeOptions: [
         { value: 'en-us', label: 'English' },
-        { value: 'pt-br', label: 'Português Brasil' }
-      ]
-    }
+        { value: 'pt-br', label: 'Português Brasil' },
+      ],
+    };
   },
 });
 </script>
 
 <style lang="scss">
 .language {
-  .q-field__native, .q-field__label, .q-field__append {
-    color: #FFF !important;
+  .q-field__native,
+  .q-field__label,
+  .q-field__append {
+    color: #fff !important;
   }
 }
-
 </style>

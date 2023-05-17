@@ -6,7 +6,6 @@ import { WebSocketStatus } from '../plugins/websocket/websocket.interface';
 import { io } from 'socket.io-client';
 
 export default boot(async (vue) => {
-
   const webSocket = {
     install: (app: App) => {
       const store = websocketStore();
@@ -22,8 +21,8 @@ export default boot(async (vue) => {
           return io(uri);
         }
       );
-    }
-  }
+    },
+  };
 
   vue.app.use(webSocket);
-})
+});

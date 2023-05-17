@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-toolbar-title>
-          {{ $t('zcode_title')}}
+          {{ $t('zcode_title') }}
         </q-toolbar-title>
         <language-component />
       </q-toolbar>
@@ -27,7 +27,7 @@
     </q-footer>
   </q-layout>
 </template>
-  
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import ServerConnectedComponent from '../components/ServerConnectedComponent.vue';
@@ -43,7 +43,9 @@ export default defineComponent({
     LanguageComponent,
   },
   data(context) {
-    const { connected, connecting, error, host, port, version } = storeToRefs(context.$websocketStore);
+    const { connected, connecting, error, host, port, version } = storeToRefs(
+      context.$websocketStore
+    );
     return {
       connected: connected,
       connecting: connecting,
@@ -51,7 +53,7 @@ export default defineComponent({
       host: host,
       port: port,
       version: version,
-    }
-  }
+    };
+  },
 });
 </script>

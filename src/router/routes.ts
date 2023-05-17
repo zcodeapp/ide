@@ -3,7 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/server/configure'
+    redirect: '/server/configure',
   },
   {
     path: '/server',
@@ -12,8 +12,8 @@ const routes: RouteRecordRaw[] = [
       { path: '', redirect: '/' },
       {
         path: 'configure',
-        component: () => import('pages/ServerConfigurePage.vue')
-      }
+        component: () => import('pages/ServerConfigurePage.vue'),
+      },
     ],
   },
   {

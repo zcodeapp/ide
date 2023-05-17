@@ -1,7 +1,11 @@
 <template>
-    <div>{{ $t('version', {
-        version
-    }) }}</div>
+  <div>
+    {{
+      $t('version', {
+        version,
+      })
+    }}
+  </div>
 </template>
 
 <script lang="ts">
@@ -11,8 +15,8 @@ export default defineComponent({
   name: 'VersionComponent',
   data() {
     return {
-      version: import.meta.env.VITE_IDE_VERSION
-    }
-  }
+      version: import.meta.env.VITE_IDE_VERSION,
+    };
+  },
 });
 </script>

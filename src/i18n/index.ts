@@ -3,5 +3,5 @@ import ptbr from './pt-br';
 
 export default {
   'en-us': enus,
-  'pt-br': ptbr
+  'pt-br': ptbr,
 };

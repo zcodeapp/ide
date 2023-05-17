@@ -2,7 +2,7 @@ export enum WebSocketStatus {
   NOT_CONNECTED = 0,
   IS_CONNECTING = 1,
   IS_CONNECTED = 2,
-  HAVE_ERROR = 3
+  HAVE_ERROR = 3,
 }
 
 export interface IWebSocketOptions {
@@ -20,7 +20,11 @@ export interface IVersion {
 export interface IWebSocket {
   host: string;
   port: string;
-  connect(options?: IWebSocketOptions, success?: (version: string) => void, error?: (error: Error) => void): Promise<void>;
+  connect(
+    options?: IWebSocketOptions,
+    success?: (version: string) => void,
+    error?: (error: Error) => void
+  ): Promise<void>;
   on<T>(event: string, callback: (...args: T[]) => void): Promise<void>;
   emit<T>(event: string, callback: (...args: T[]) => void): Promise<void>;
 }

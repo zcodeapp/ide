@@ -16,7 +16,12 @@ export interface IWebSocketStoreActions {
   changeVersion(version: string): void;
 }
 
-export const websocketStore = defineStore<'websocket', IWebSocketStoreStates, NonNullable<unknown>, IWebSocketStoreActions>('websocket', {
+export const websocketStore = defineStore<
+  'websocket',
+  IWebSocketStoreStates,
+  NonNullable<unknown>,
+  IWebSocketStoreActions
+>('websocket', {
   state: () => ({
     connected: false,
     connecting: false,
@@ -27,9 +32,9 @@ export const websocketStore = defineStore<'websocket', IWebSocketStoreStates, No
   }),
   actions: {
     change(state: WebSocketStatus) {
-      this.connected = state == WebSocketStatus.IS_CONNECTED
-      this.connecting = state == WebSocketStatus.IS_CONNECTING
-      this.error = state == WebSocketStatus.HAVE_ERROR
+      this.connected = state == WebSocketStatus.IS_CONNECTED;
+      this.connecting = state == WebSocketStatus.IS_CONNECTING;
+      this.error = state == WebSocketStatus.HAVE_ERROR;
     },
     configure(host: string, port: string) {
       this.host = host;
@@ -37,6 +42,6 @@ export const websocketStore = defineStore<'websocket', IWebSocketStoreStates, No
     },
     changeVersion(version: string) {
       this.version = version;
-    }
+    },
   },
 });

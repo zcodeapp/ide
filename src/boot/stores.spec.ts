@@ -8,28 +8,25 @@ vi.mock('../stores/websocket-store', () => {
   return {
     websocketStore: () => {
       return returnContent;
-    }
+    },
   };
 });
 
 describe('boot/stores', () => {
-
   const app = {
     config: {
-        globalProperties: {}
-    }
-};
+      globalProperties: {},
+    },
+  };
 
   it('test stores', async () => {
-    await boot(
-      {
-        app: {
-          use: (callback) => {
-            callback.install(app);
-          }
-        }
-      } as any
-    );
+    await boot({
+      app: {
+        use: (callback) => {
+          callback.install(app);
+        },
+      },
+    } as any);
 
     expect(app.config.globalProperties.$websocketStore).toBe(returnContent);
   });

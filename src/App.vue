@@ -14,17 +14,16 @@ export default defineComponent({
     if (fullQuery.length == 2) {
       const queries = fullQuery[1].split('&');
       if (queries.length > 0) {
-        queries.map(q => {
-          const part = q.split('=')
-          if (part.length == 2)
-            query[part[0]] = part[1];
-        })
+        queries.map((q) => {
+          const part = q.split('=');
+          if (part.length == 2) query[part[0]] = part[1];
+        });
         if (query?.lang) {
           const { locale } = useI18n({ useScope: 'global' });
-          locale.value = query.lang
+          locale.value = query.lang;
         }
       }
     }
-  }
+  },
 });
 </script>
