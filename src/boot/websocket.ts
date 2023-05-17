@@ -1,8 +1,8 @@
 import { boot } from 'quasar/wrappers';
-import WebSocket from 'src/plugins/websocket/websocket';
+import WebSocket from '../plugins/websocket/websocket';
 import { App } from 'vue';
-import { websocketStore } from 'src/stores/websocket-store';
-import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
+import { websocketStore } from '../stores/websocket-store';
+import { WebSocketStatus } from '../plugins/websocket/websocket.interface';
 import { io } from 'socket.io-client';
 
 export default boot(async (vue) => {

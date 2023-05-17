@@ -42,8 +42,8 @@ export default defineComponent({
     VersionComponent,
     LanguageComponent,
   },
-  data() {
-    const { connected, connecting, error, host, port, version } = storeToRefs(this.$websocketStore);
+  data(context) {
+    const { connected, connecting, error, host, port, version } = storeToRefs(context.$websocketStore);
     return {
       connected: connected,
       connecting: connecting,

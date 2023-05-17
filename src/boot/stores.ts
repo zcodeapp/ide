@@ -1,6 +1,6 @@
 import { boot } from 'quasar/wrappers';
 import { App } from 'vue';
-import { websocketStore } from 'src/stores/websocket-store';
+import { websocketStore } from '../stores/websocket-store';
 
 export default boot(async (vue) => {
 
@@ -11,4 +11,4 @@ export default boot(async (vue) => {
   }
 
   vue.app.use(_websocketStore);
-})
+});

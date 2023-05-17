@@ -14,6 +14,13 @@ export default defineConfig({
     ],
     coverage: {
       enabled: true,
+      exclude: [
+        'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+        'src/**/*.interface.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+        'src/**/*.vue',
+        'src/i18n/**',
+        'test/vitest/setup-file.ts',
+      ]
     }
   },
   plugins: [

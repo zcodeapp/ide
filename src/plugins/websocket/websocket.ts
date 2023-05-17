@@ -2,7 +2,7 @@ import { IVersion, IWebSocket, IWebSocketOptions } from './websocket.interface';
 import { Socket } from 'socket.io-client';
 import { Md5 } from 'ts-md5';
 
-class WebSocket implements IWebSocket {
+export class WebSocket implements IWebSocket {
 
   private instanceIo?: {
     hash: string,
