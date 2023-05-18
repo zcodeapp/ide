@@ -1,5 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { RouteRecordRaw } from 'vue-router';
+import { describe, expect, it, vi } from 'vitest';
 import routes from './routes';
 
 vi.mock('vue-i18n');
