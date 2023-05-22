@@ -11,8 +11,5 @@ WORKDIR /e2e
 
 USER node
 
-# ENTRYPOINT ["/usr/local/bin/npx"]
-# CMD ["cypress", "open"]
-
 ENTRYPOINT ["/bin/bash"]
 CMD ["-"]
