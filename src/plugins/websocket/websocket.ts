@@ -21,12 +21,12 @@ export class WebSocket implements IWebSocket {
     ioFactory?: (uri: string) => Promise<Socket>
   ): IWebSocket {
     if (!WebSocket.instance) {
-      if (!host || !port || !ioFactory) {
+      if (!ioFactory) {
         throw new Error(
-          'To get websocket instance configure host, port and ioFactory'
+          'To get websocket instance configure ioFactory'
         );
       }
-      WebSocket.instance = new WebSocket(host, port, ioFactory);
+      WebSocket.instance = new WebSocket(host || '', port || '', ioFactory);
     }
     return WebSocket.instance;
   }

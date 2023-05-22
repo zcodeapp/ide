@@ -88,15 +88,15 @@ describe('plugins/websocket/websocket', () => {
       return new Promise((resolve, reject) => {
         try {
           const instance = websocket(undefined, port, ioFactory);
-          resolve(instance);
+          resolve('success');
         } catch (e: any) {
           reject(e.message);
         }
       });
     };
 
-    expect(test()).rejects.toBe(
-      'To get websocket instance configure host, port and ioFactory'
+    expect(test()).resolves.toBe(
+      'success'
     );
   });
 
@@ -114,8 +114,8 @@ describe('plugins/websocket/websocket', () => {
       });
     };
 
-    expect(test()).rejects.toBe(
-      'To get websocket instance configure host, port and ioFactory'
+    expect(test()).resolves.toBe(
+      'success'
     );
   });
 
@@ -134,7 +134,7 @@ describe('plugins/websocket/websocket', () => {
     };
 
     expect(test()).rejects.toBe(
-      'To get websocket instance configure host, port and ioFactory'
+      'To get websocket instance configure ioFactory'
     );
   });
 

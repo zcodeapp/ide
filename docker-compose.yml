@@ -31,10 +31,11 @@ services:
     build:
       context: ${PWD}
       dockerfile: docker/cypress/Dockerfile
-    entrypoint: /usr/local/bin/npx
-    command: cypress open
+    entrypoint: /usr/local/bin/npm
+    command: run test:e2e:ci
     ports:
       - 8080:8080
+      - 9000:9000
     environment:
       - DISPLAY=${DISPLAY}
     volumes:
