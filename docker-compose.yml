@@ -31,6 +31,8 @@ services:
     build:
       context: ${PWD}
       dockerfile: docker/cypress/Dockerfile
+    entrypoint: /usr/local/bin/npx
+    command: cypress open
     ports:
       - 8080:8080
     environment:

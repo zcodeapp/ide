@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
+import { WebSocketStatus } from '../plugins/websocket/websocket.interface';
 import { defineComponent } from 'vue';
 
 export default defineComponent({

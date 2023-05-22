@@ -33,6 +33,7 @@ import { defineComponent } from 'vue';
 import ServerConnectedComponent from '../components/ServerConnectedComponent.vue';
 import VersionComponent from '../components/VersionComponent.vue';
 import LanguageComponent from '../components/LanguageComponent.vue';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
   name: 'GuestLayout',
@@ -42,7 +43,7 @@ export default defineComponent({
     LanguageComponent,
   },
   data() {
-    const { connected, connecting, error, host, port, version } = this.$websocketStore;
+    const { connected, connecting, error, host, port, version } = storeToRefs(this.$websocketStore);
     return {
       connected: connected,
       connecting: connecting,

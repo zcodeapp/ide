@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
+import { WebSocketStatus } from '../plugins/websocket/websocket.interface';
 
 export default defineComponent({
   name: 'ServerConnectedComponent',
