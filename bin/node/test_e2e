@@ -1,0 +1,15 @@
+#!/bin/sh
+
+trap_ctrlc() {
+    docker compose stop node_cypress;
+    docker compose rm --force node_cypress;
+    exit $1;
+}
+
+trap "trap_ctrlc 0" 0;
+trap "trap_ctrlc 2" 2;
+
+mkdir -p ~/.cache/Cypress
+# docker compose up -d node_cypress
+# docker compose logs -f node_cypress
+docker compose run -it --rm node_cypress

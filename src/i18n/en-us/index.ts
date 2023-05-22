@@ -17,4 +17,6 @@ export default {
   server_port_label: 'Server port',
   server_port_min: '80',
   server_port_min_label: 'Minimal port is {port}',
+  not_found_page_title: 'Oops. Nothing here...',
+  go_home: 'Go Home',
 };

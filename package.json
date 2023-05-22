@@ -38,6 +38,7 @@
     "@vue/test-utils": "^2.0.0",
     "autoprefixer": "^10.4.2",
     "c8": "^7.13.0",
+    "cypress": "^12.12.0",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
