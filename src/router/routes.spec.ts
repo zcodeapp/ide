@@ -3,11 +3,11 @@ import routes from './routes';
 
 vi.mock('vue-i18n');
 vi.mock('layouts/GuestLayout.vue');
-// vi.mock('vue-router', () => {
-//   return {
-//     RouteRecordRaw: {}
-//   }
-// });
+vi.mock('vue-router', () => {
+  return {
+    RouteRecordRaw: {}
+  }
+});
 vi.mock('pinia', () => {
   return {
     storeToRefs: (input) => {
