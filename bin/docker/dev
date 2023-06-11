@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+set -e
+set -o errexit
+set -o nounset
+
+usage() {
+  printf "Docker Dev\n"
+
+  printf "Usage: bin/docker/dev "
+  printf -- "[-h] "
+  printf -- "[-v] "
+  printf -- "[-d] "
+  printf -- "-b <debugport> "
+  printf -- "-p <port> "
+  printf -- "-o <host> "
+  printf "\n"
+
+  printf "  -%s\t%s - %s%s\n" "h" "help" "Show this help message." ""
+  printf "  -%s\t%s - %s%s\n" "v" "version" "Show version information." ""
+  printf "  -%s\t%s - %s%s\n" "d" "debug" "Enable debug for Node." ""
+  printf "  -%s\t%s - %s%s\n" "b" "debugport" "Expose Port for Node Debug" " (default: 9229)"
+  printf "  -%s\t%s - %s%s\n" "p" "port" "Expose Port" "Port for Node (default: 3000)"
+  printf "  -%s\t%s - %s%s\n" "o" "host" "Host" "Host for Node (default: 0.0.0.0)"
+}
+
+version() {
+  printf "0.0.1\n"
+}
+
+# default values
+opt_help="false"
+opt_version="false"
+opt_debug="true"
+opt_debugport="9229"
+opt_port="3000"
+opt_host="0.0.0.0"
+
+# declared functions
+
+# option parsing
+OPTSPEC=:hvdb:p:o:
+while getopts $OPTSPEC option; do
+  case "$option" in
+    h ) opt_help="true"; usage; exit 0  ;;
+    v ) opt_version="true"; version; exit 0  ;;
+    d ) opt_debug="true";  ;;
+    b ) opt_debugport=$OPTARG;  ;;
+    p ) opt_port=$OPTARG;  ;;
+    o ) opt_host=$OPTARG;  ;;
+   \? ) echo "Unknown option: -$OPTARG" >&2; exit 1;;
+    : ) echo "Missing option argument for -$OPTARG" >&2; exit 1;;
+    * ) echo "Unimplemented option: -$OPTARG" >&2; exit 1;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# required option validation
+if [ -z "$opt_port" ] || [ -z "$opt_host" ] ; then
+  usage
+  exit 1
+fi
+
+if [ "$opt_debug" == "true" ]; then
+  if [ -z "$opt_debugport" ] ; then
+    usage
+    exit 1
+  fi
+fi
+
+PORTS="--publish $opt_port:$opt_port"
+if [ "$opt_debug" == "true" ]; then
+  PORTS="$PORTS --publish $opt_debugport:$opt_debugport"
+fi
+
+docker compose run -it --rm $PORTS node_cli -c "bin/node/dev -p $opt_port -o $opt_host"

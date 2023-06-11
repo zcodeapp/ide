@@ -4,4 +4,4 @@ set -e
 set -o errexit
 set -o nounset
 
-docker compose run -it --rm node_cli -c "bin/node/build"
+docker compose run -it --rm node_cli -c "bin/node/install";

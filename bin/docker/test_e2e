@@ -5,14 +5,14 @@ set -o errexit
 set -o nounset
 
 usage() {
-  printf "Node Test e2e\n"
+  printf "Docker Test e2e\n"
 
-  printf "Usage: bin/node/test_e2e "
+  printf "Usage: bin/docker/test_e2e "
   printf -- "[-h] "
   printf -- "[-v] "
   printf -- "[-c] "
-  printf -- "[-n=<start_point>] "
   printf -- "-e=<env> "
+  printf -- "[-n=<start_point>] "
   printf "\n"
 
   printf "  -%s\t%s - %s%s\n" "h" "help" "Show this help message." ""
@@ -59,10 +59,11 @@ fi
 
 ARGS=""
 if [ "$opt_ci" == "true" ]; then
-  ARGS=":ci"
+  ARGS=" -c"
 fi
 if [ "$opt_start_point" != "" ]; then
-  ARGS="$ARGS $opt_start_point"
+  ARGS="$ARGS -n $opt_start_point"
 fi
 
-/usr/local/bin/npm run test:e2e$ARGS;
+mkdir -p ~/.cache/Cypress
+docker compose run -it --rm node_cypress -c "bin/node/test_e2e$ARGS"

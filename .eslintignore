@@ -5,3 +5,8 @@
 /node_modules
 .eslintrc.js
 /src-ssr
+*.spec.ts
+/.vscode
+/bin
+/cypress
+/test

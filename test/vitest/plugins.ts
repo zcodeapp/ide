@@ -1,13 +1,13 @@
-import { createI18n } from "vue-i18n";
+import { createI18n } from 'vue-i18n';
 import messages from '../../src/i18n';
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from 'vue-router';
 import routes from '../../src/router/routes';
 
 const i18n = createI18n({
   locale: 'en-us',
   legacy: false,
   globalInjection: true,
-  messages
+  messages,
 });
 
 const router = createRouter({
@@ -16,4 +16,4 @@ const router = createRouter({
   history: createWebHashHistory(),
 });
 
-export default [ i18n, router ];
+export default [i18n, router];

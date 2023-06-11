@@ -2,10 +2,7 @@
   "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
     "baseUrl": ".",
-    "types": [
-      "cypress",
-      "node"
-    ]
+    "types": ["cypress", "node"]
   },
   "include": ["**/*.ts"]
 }

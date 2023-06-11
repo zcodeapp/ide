@@ -5,21 +5,17 @@ set -o errexit
 set -o nounset
 
 usage() {
-  printf "Node Test e2e\n"
+  printf "Docker Hostname\n"
 
-  printf "Usage: bin/node/test_e2e "
+  printf "Usage: bin/docker/hostname "
+  printf -- "-c <container name> "
   printf -- "[-h] "
   printf -- "[-v] "
-  printf -- "[-c] "
-  printf -- "[-n=<start_point>] "
-  printf -- "-e=<env> "
   printf "\n"
 
   printf "  -%s\t%s - %s%s\n" "h" "help" "Show this help message." ""
   printf "  -%s\t%s - %s%s\n" "v" "version" "Show version information." ""
-  printf "  -%s\t%s - %s%s\n" "e" "env" "Environment" " (default: dev)"
-  printf "  -%s\t%s - %s%s\n" "c" "ci" "Is CI execution" ""
-  printf "  -%s\t%s - %s%s\n" "n" "start_point" "File or Directory for start point tests" ""
+  printf "  -%s\t%s - %s%s\n" "c" "container" "Environment" " (default: dev)"
 }
 
 version() {
@@ -29,21 +25,17 @@ version() {
 # default values
 opt_help="false"
 opt_version="false"
-opt_ci="false"
-opt_env="dev"
-opt_start_point=""
+opt_container=""
 
 # declared functions
 
 # option parsing
-OPTSPEC=:hve:cn:
+OPTSPEC=:hvc:
 while getopts $OPTSPEC option; do
   case "$option" in
     h ) opt_help="true"; usage; exit 0  ;;
     v ) opt_version="true"; version; exit 0  ;;
-    e ) opt_env=$OPTARG;  ;;
-    c ) opt_ci="true";  ;;
-    n ) opt_start_point=$OPTARG;  ;;
+    c ) opt_container=$OPTARG;  ;;
    \? ) echo "Unknown option: -$OPTARG" >&2; exit 1;;
     : ) echo "Missing option argument for -$OPTARG" >&2; exit 1;;
     * ) echo "Unimplemented option: -$OPTARG" >&2; exit 1;;
@@ -52,17 +44,16 @@ done
 shift $((OPTIND - 1))
 
 # required option validation
-if [ -z "$opt_env" ] ; then
+if [ -z "$opt_container" ] ; then
   usage
   exit 1
 fi
 
-ARGS=""
-if [ "$opt_ci" == "true" ]; then
-  ARGS=":ci"
-fi
-if [ "$opt_start_point" != "" ]; then
-  ARGS="$ARGS $opt_start_point"
-fi
+DOCKER_CONTAINER_ID=$(docker ps -aqf "name=$opt_container")
+DOCKER_CONTAINER_HOSTNAME=$(/bin/bash -c "docker exec -it --user=root $DOCKER_CONTAINER_ID /bin/bash -c \"hostname -i\"")
 
-/usr/local/bin/npm run test:e2e$ARGS;
+echo $DOCKER_CONTAINER_HOSTNAME
+
+if [ -z $DOCKER_CONTAINER_HOSTNAME ]; then
+  exit 1;
+fi

@@ -22,9 +22,7 @@ export class WebSocket implements IWebSocket {
   ): IWebSocket {
     if (!WebSocket.instance) {
       if (!ioFactory) {
-        throw new Error(
-          'To get websocket instance configure ioFactory'
-        );
+        throw new Error('To get websocket instance configure ioFactory');
       }
       WebSocket.instance = new WebSocket(host || '', port || '', ioFactory);
     }

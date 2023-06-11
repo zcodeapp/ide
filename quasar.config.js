@@ -56,7 +56,10 @@ module.exports = configure(function (/* ctx */) {
 
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       // vueRouterBase,
-      // vueDevtools,
+      // vueDevtools: true,
+      devtool: 'eval',
+      sourceMap: true,
+      // devtool: 'source-map',
       // vueOptionsAPI: false,
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup

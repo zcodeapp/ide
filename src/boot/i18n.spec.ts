@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import boot from './i18n';
 
-let callbackContent = 'test';
+const callbackContent = 'test';
 let callbackContentTest = '';
 
 vi.mock('vue-i18n', () => {

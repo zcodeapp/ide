@@ -1,15 +1,23 @@
-FROM node:18.16.0-alpine3.17
+FROM node:20.1.0
 
 USER root
 
-RUN mkdir -p /var/www \
-    && apk add --no-cache git curl \
-    && npm install -g npm
+RUN mkdir -p /var/www/ide /__w/_temp/_runner_file_commands \
+    && chown node:node -R /__w \
+    && chmod +w -R /__w \ 
+    && npm install -g npm \
+    && apt-get update \
+    && apt-get install git curl vim -y \
+    && curl -sSL https://get.docker.com/ | sh \
+    && usermod -aG docker node \
+    && sed -i 's/docker:x:999:node/docker:x:998:node/g' /etc/group \
+    && apt-get clean autoclean \
+    && apt-get autoremove --yes \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-
-WORKDIR /var/www
+WORKDIR /var/www/ide
 
 USER node
 
-ENTRYPOINT ["/bin/sh"]
+ENTRYPOINT ["/bin/bash"]
 CMD ["-"]

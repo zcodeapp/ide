@@ -1,7 +1,5 @@
 <template>
-  <div>
-    mock component
-  </div>
+  <div>mock component</div>
 </template>
 
 <script lang="ts">

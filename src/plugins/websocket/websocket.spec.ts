@@ -95,9 +95,7 @@ describe('plugins/websocket/websocket', () => {
       });
     };
 
-    expect(test()).resolves.toBe(
-      'success'
-    );
+    expect(test()).resolves.toBe('success');
   });
 
   it('test try get first singleton instance without port', () => {
@@ -114,9 +112,7 @@ describe('plugins/websocket/websocket', () => {
       });
     };
 
-    expect(test()).resolves.toBe(
-      'success'
-    );
+    expect(test()).resolves.toBe('success');
   });
 
   it('test try get first singleton instance without ioFactory', () => {

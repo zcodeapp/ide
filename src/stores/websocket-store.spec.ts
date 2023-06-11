@@ -1,19 +1,29 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { IWebSocketStoreActions, IWebSocketStoreStates, websocketStore } from './websocket-store';
+import {
+  IWebSocketStoreActions,
+  IWebSocketStoreStates,
+  websocketStore,
+} from './websocket-store';
 import { Store } from 'pinia';
 import { WebSocketStatus } from 'src/plugins/websocket/websocket.interface';
 
 vi.mock('pinia', () => {
-    return {
-        defineStore: (store: string, definations: { state: () => IWebSocketStoreStates, actions: IWebSocketStoreActions }) => {
-            return () => {
-              return {
-                ... definations.state(),
-                ... definations.actions,
-              }
-            }
-        }
-    }
+  return {
+    defineStore: (
+      store: string,
+      definations: {
+        state: () => IWebSocketStoreStates;
+        actions: IWebSocketStoreActions;
+      }
+    ) => {
+      return () => {
+        return {
+          ...definations.state(),
+          ...definations.actions,
+        };
+      };
+    },
+  };
 });
 
 describe('stores/websocket-store', () => {
