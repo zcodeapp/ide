@@ -58,7 +58,7 @@ jobs:
           path: .
           key: ${{ runner.os }}-install-${{ github.sha }}
       - name: Restore Node
-        id: cache-install
+        id: cache-node
         uses: actions/cache/restore@v3
         with:
           path: /home/node/.cache
