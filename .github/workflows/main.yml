@@ -73,7 +73,7 @@ jobs:
     - install
     environment: development
     container:
-      image: zcodeapp/node_frontend
+      image: zcodeapp/node_cypress
       options: --user root
     env:
       NODE_ENV: development
