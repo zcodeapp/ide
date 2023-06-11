@@ -36,7 +36,7 @@ jobs:
         id: cache-node
         uses: actions/cache/save@v3
         with:
-          path: /home/node/.cache
+          path: /github/home/.cache
           key: ${{ runner.os }}-install-cache-${{ github.sha }}
 
   test_unit:
@@ -61,7 +61,7 @@ jobs:
         id: cache-node
         uses: actions/cache/restore@v3
         with:
-          path: /home/node/.cache
+          path: /github/home/.cache
           key: ${{ runner.os }}-install-cache-${{ github.sha }}
       - name: Test
         run: "bin/ci/test_unit -e development"
@@ -88,7 +88,7 @@ jobs:
         id: cache-node
         uses: actions/cache/restore@v3
         with:
-          path: /home/node/.cache
+          path: /github/home/.cache
           key: ${{ runner.os }}-install-cache-${{ github.sha }}
       - name: Test
         run: "bin/ci/test_e2e -e development"
