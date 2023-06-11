@@ -50,3 +50,4 @@ if [ -z "$opt_env" ] ; then
 fi
 
 bin/node/install -e $opt_env;
+/usr/local/bin/npx cypress install

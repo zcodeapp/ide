@@ -26,12 +26,18 @@ jobs:
         run: "bin/ci/install -e development"
       - name: Build
         run: "VITE_DOMAIN=$VITE_DOMAIN VITE_IDE_VERSION=$VITE_IDE_VERSION VITE_PORT=$VITE_PORT VITE_PROTOCOL=$VITE_PROTOCOL VITE_SERVER_ADDRESS=$VITE_SERVER_ADDRESS VITE_SERVER_PORT=$VITE_SERVER_PORT bin/ci/build -e development"
-      - name: Cache
+      - name: Cache Install
         id: cache-install
         uses: actions/cache/save@v3
         with:
           path: .
           key: ${{ runner.os }}-install-${{ github.sha }}
+      - name: Cache Node
+        id: cache-install
+        uses: actions/cache/save@v3
+        with:
+          path: /home/node/.cache
+          key: ${{ runner.os }}-install-cache-${{ github.sha }}
 
   test_unit:
     name: Test Unit
@@ -51,6 +57,12 @@ jobs:
         with:
           path: .
           key: ${{ runner.os }}-install-${{ github.sha }}
+      - name: Restore Node
+        id: cache-install
+        uses: actions/cache/restore@v3
+        with:
+          path: /home/node/.cache
+          key: ${{ runner.os }}-install-cache-${{ github.sha }}
       - name: Test
         run: "bin/ci/test_unit -e development"
 
@@ -72,6 +84,12 @@ jobs:
         with:
           path: .
           key: ${{ runner.os }}-install-${{ github.sha }}
+      - name: Restore Node
+        id: cache-install
+        uses: actions/cache/restore@v3
+        with:
+          path: /home/node/.cache
+          key: ${{ runner.os }}-install-cache-${{ github.sha }}
       - name: Test
         run: "bin/ci/test_e2e -e development"
     
