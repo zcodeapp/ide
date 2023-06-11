@@ -7,7 +7,7 @@
 
 All project uses Docker engine.
 
-## Prepare your computed
+## Prepare your computer
 
 1) Install project
 
@@ -15,7 +15,7 @@ All project uses Docker engine.
 bin/docker/install
 ```
 
-2) Lauch develop (with debug node)
+2) Launch develop
 
 ```bash
 bin/docker/dev
