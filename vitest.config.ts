@@ -20,6 +20,7 @@ export default defineConfig({
         'src/**/*.vue',
         'src/i18n/**',
         'test/vitest/setup-file.ts',
+        'router/routes.spec.ts'
       ],
     },
   },
