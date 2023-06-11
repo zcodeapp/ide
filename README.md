@@ -1,43 +1,24 @@
-# Zcode App IDE (ide)
+# Zcode App IDE
 
-A Quasar Project
+[![ZCode App IDE](https://github.com/zcodeapp/ide/actions/workflows/main.yml/badge.svg)](https://github.com/zcodeapp/ide/actions/workflows/main.yml)
 
-## Install the dependencies
 
-```bash
-yarn
-# or
-npm install
-```
+# Development
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+All project uses Docker engine.
 
-```bash
-quasar dev
-```
+## Prepare your computed
 
-### Lint the files
+1) Install project
 
 ```bash
-yarn lint
-# or
-npm run lint
+bin/docker/install
 ```
 
-### Format the files
+2) Lauch develop (with debug node)
 
 ```bash
-yarn format
-# or
-npm run format
+bin/docker/dev
 ```
 
-### Build the app for production
-
-```bash
-quasar build
-```
-
-### Customize the configuration
-
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+3) Open your browser on `http://localhost:3000`

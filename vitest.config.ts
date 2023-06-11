@@ -12,6 +12,9 @@ export default defineConfig({
       'src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
       'test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
     ],
+    exclude: [
+      'src/router/routes.spec.ts'
+    ],
     coverage: {
       enabled: true,
       exclude: [
@@ -19,8 +22,7 @@ export default defineConfig({
         'src/**/*.interface.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
         'src/**/*.vue',
         'src/i18n/**',
-        'test/vitest/setup-file.ts',
-        'router/routes.spec.ts'
+        'test/vitest/setup-file.ts'
       ],
     },
   },
