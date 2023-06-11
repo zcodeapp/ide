@@ -13,12 +13,12 @@ jobs:
       options: --user root
     env:
       NODE_ENV: development
-      VITE_DOMAIN: '${{ env.VITE_DOMAIN }}'
-      VITE_IDE_VERSION: '${{ env.VITE_IDE_VERSION }}'
-      VITE_PORT: '${{ env.VITE_PORT }}'
-      VITE_PROTOCOL: '${{ env.VITE_PROTOCOL }}'
-      VITE_SERVER_ADDRESS: '${{ env.VITE_SERVER_ADDRESS }}'
-      VITE_SERVER_PORT: '${{ env.VITE_SERVER_PORT }}'
+      VITE_DOMAIN: ${{ env.VITE_DOMAIN }}
+      VITE_IDE_VERSION: ${{ env.VITE_IDE_VERSION }}
+      VITE_PORT: ${{ env.VITE_PORT }}
+      VITE_PROTOCOL: ${{ env.VITE_PROTOCOL }}
+      VITE_SERVER_ADDRESS: ${{ env.VITE_SERVER_ADDRESS }}
+      VITE_SERVER_PORT: ${{ env.VITE_SERVER_PORT }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
