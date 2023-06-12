@@ -32,7 +32,7 @@ version() {
 opt_help="false"
 opt_version="false"
 opt_env="development"
-opt_image="zcodeapp/ide-server"
+opt_image="zcodeapp/ide"
 opt_imageversion="latest"
 opt_container="test_container"
 
@@ -73,14 +73,7 @@ if [ -z "$opt_imageversion" ] ; then
   exit 1
 fi
 
-docker ps -a
-docker images
-
 DOCKER_CONTAINER_ID=$(docker ps -aqf "name=$opt_container")
 DOCKER_HOSTNAME=$(docker exec --user=root $DOCKER_CONTAINER_ID /bin/bash -c "hostname -i")
-
-bin/docker/node/online.js $DOCKER_HOSTNAME
-
-docker stop $opt_container -t 0;
-
+bin/docker/node/online.js "$DOCKER_HOSTNAME:3000"
 exit 0

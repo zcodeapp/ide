@@ -6,6 +6,7 @@ services:
       dockerfile: docker/node/Dockerfile
     volumes:
       - ${PWD}:/var/www/ide
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - VITE_PROTOCOL=http
       - VITE_DOMAIN=localhost
@@ -34,3 +35,4 @@ services:
       - ${PWD}:/e2e
       - ~/.cache/Cypress:/home/node/.cache/Cypress
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - /var/run/docker.sock:/var/run/docker.sock
