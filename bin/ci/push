@@ -23,7 +23,7 @@ usage() {
   printf "  -%s\t%s - %s%s\n" "m" "major" "Major version" ""
   printf "  -%s\t%s - %s%s\n" "i" "minor" "Minor version" ""
   printf "  -%s\t%s - %s%s\n" "p" "patch" "Patch version" ""
-  printf "  -%s\t%s - %s%s\n" "d" "destination" "Image name destination" " (default: zcodeapp/ide-server)"
+  printf "  -%s\t%s - %s%s\n" "d" "destination" "Image name destination" " (default: zcodeapp/ide)"
 }
 
 version() {
@@ -37,7 +37,7 @@ opt_major="false"
 opt_minor="false"
 opt_patch="false"
 opt_env="development"
-opt_destination="zcodeapp/ide-server"
+opt_destination="zcodeapp/ide"
 
 # declared functions
 
