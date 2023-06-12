@@ -89,7 +89,7 @@ echo $DOCKER_CONTAINER_ID
 echo "command"
 echo "docker exec --user=root $DOCKER_CONTAINER_ID /bin/bash -c \"hostname -i\""
 
-DOCKER_HOSTNAME=$(docker exec --user=root $DOCKER_CONTAINER_ID /bin/bash -c "hostname -i")
+DOCKER_HOSTNAME=$(docker exec --user=root $DOCKER_CONTAINER_ID /bin/sh -c "hostname -i")
 
 echo "DOCKER_HOSTNAME"
 echo $DOCKER_HOSTNAME
