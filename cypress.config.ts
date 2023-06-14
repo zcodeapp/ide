@@ -2,6 +2,12 @@ import registerCodeCoverageTasks from '@cypress/code-coverage/task';
 import { injectQuasarDevServerConfig } from '@quasar/quasar-app-extension-testing-e2e-cypress/cct-dev-server';
 import { defineConfig } from 'cypress';
 
+const baseUrl = process.env.CYPRESS_HOST_TEST ? `http://${process.env.CYPRESS_HOST_TEST}/` : 'http://localhost:9000/';
+
+console.log('Cypress baseUrl', {
+  baseUrl
+})
+
 export default defineConfig({
   fixturesFolder: 'test/cypress/fixtures',
   screenshotsFolder: 'test/cypress/screenshots',
@@ -12,7 +18,7 @@ export default defineConfig({
       registerCodeCoverageTasks(on, config);
       return config;
     },
-    baseUrl: 'http://localhost:9000/',
+    baseUrl,
     supportFile: 'test/cypress/support/e2e.ts',
     specPattern: 'test/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
   },
@@ -24,6 +30,6 @@ export default defineConfig({
     supportFile: 'test/cypress/support/component.ts',
     specPattern: 'src/**/*.cy.{js,jsx,ts,tsx}',
     indexHtmlFile: 'test/cypress/support/component-index.html',
-    devServer: injectQuasarDevServerConfig(),
+    devServer: process.env.CYPRESS_HOST_TEST ? null : injectQuasarDevServerConfig(),
   },
 });

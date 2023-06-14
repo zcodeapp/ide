@@ -94,5 +94,8 @@ DOCKER_HOSTNAME=$(docker exec --user=root $DOCKER_CONTAINER_ID /bin/sh -c "hostn
 echo "DOCKER_HOSTNAME"
 echo $DOCKER_HOSTNAME
 
-bin/docker/node/online.js "$DOCKER_HOSTNAME:3000"
+DOCKER_HOST="$DOCKER_HOSTNAME:3000"
+
+bin/docker/node/online.js "$DOCKER_HOST"
+CYPRESS_HOST_TEST=$DOCKER_HOST bin/node/test_e2e -c 
 exit 0
