@@ -181,7 +181,7 @@ jobs:
       - name: Image Tag
         run: docker tag zcodeapp/ide:latest zcodeapp/ide:test_version
       - name: Start ZCode APP IDE
-        uses: zcodeapp/ide-github-action@1.0.2
+        uses: zcodeapp/ide-github-action@1.0.1
         with:
           ide-version: test_version
       - name: Test Image
