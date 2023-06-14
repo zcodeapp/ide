@@ -11,7 +11,7 @@ services:
       - VITE_PROTOCOL=http
       - VITE_DOMAIN=localhost
       - VITE_PORT=3000
-      - VITE_IDE_VERSION=0.0.3
+      - VITE_IDE_VERSION=0.0.4
       - VITE_SERVER_ADDRESS=ws://localhost
       - VITE_SERVER_PORT=4000
 
@@ -28,7 +28,7 @@ services:
       - VITE_PROTOCOL=http
       - VITE_DOMAIN=localhost
       - VITE_PORT=3000
-      - VITE_IDE_VERSION=0.0.3
+      - VITE_IDE_VERSION=0.0.4
       - VITE_SERVER_ADDRESS=ws://localhost
       - VITE_SERVER_PORT=4000
     volumes:
