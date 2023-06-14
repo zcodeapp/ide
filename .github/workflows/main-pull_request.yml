@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, reopened]
     branches:
-      - "develop"
+      - "main"
 jobs:
   install:
     name: Install development
