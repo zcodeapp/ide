@@ -96,6 +96,6 @@ echo $DOCKER_HOSTNAME
 
 DOCKER_HOST="$DOCKER_HOSTNAME:3000"
 
-bin/docker/node/online.js "$DOCKER_HOST"
+bin/docker/node/online.js $DOCKER_HOST
 CYPRESS_HOST_TEST=$DOCKER_HOST bin/node/test_e2e -c 
 exit 0
