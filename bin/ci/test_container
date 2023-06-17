@@ -100,5 +100,5 @@ docker exec $DOCKER_CONTAINER_ID /bin/sh -c "ls -la /usr/share/nginx/html"
 DOCKER_HOST="$DOCKER_HOSTNAME"
 
 bin/docker/node/online.js $DOCKER_HOST
-CYPRESS_HOST_TEST=$DOCKER_HOST bin/node/test_e2e -c 
+CYPRESS_HOST_TEST=$DOCKER_HOST bin/node/test_e2e -c -o
 exit 0

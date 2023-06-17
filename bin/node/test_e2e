@@ -11,6 +11,7 @@ usage() {
   printf -- "[-h] "
   printf -- "[-v] "
   printf -- "[-c] "
+  printf -- "[-o] "
   printf -- "[-n=<start_point>] "
   printf -- "-e=<env> "
   printf "\n"
@@ -19,6 +20,7 @@ usage() {
   printf "  -%s\t%s - %s%s\n" "v" "version" "Show version information." ""
   printf "  -%s\t%s - %s%s\n" "e" "env" "Environment" " (default: dev)"
   printf "  -%s\t%s - %s%s\n" "c" "ci" "Is CI execution" ""
+  printf "  -%s\t%s - %s%s\n" "o" "container" "Is Container" ""
   printf "  -%s\t%s - %s%s\n" "n" "start_point" "File or Directory for start point tests" ""
 }
 
@@ -30,19 +32,21 @@ version() {
 opt_help="false"
 opt_version="false"
 opt_ci="false"
+opt_container="false"
 opt_env="dev"
 opt_start_point=""
 
 # declared functions
 
 # option parsing
-OPTSPEC=:hve:cn:
+OPTSPEC=:hve:con:
 while getopts $OPTSPEC option; do
   case "$option" in
     h ) opt_help="true"; usage; exit 0  ;;
     v ) opt_version="true"; version; exit 0  ;;
     e ) opt_env=$OPTARG;  ;;
     c ) opt_ci="true";  ;;
+    o ) opt_container="true";  ;;
     n ) opt_start_point=$OPTARG;  ;;
    \? ) echo "Unknown option: -$OPTARG" >&2; exit 1;;
     : ) echo "Missing option argument for -$OPTARG" >&2; exit 1;;
@@ -58,11 +62,14 @@ if [ -z "$opt_env" ] ; then
 fi
 
 ARGS=""
+if [ "$opt_container" == "true" ]; then
+  ARGS=":container"
+fi
 if [ "$opt_ci" == "true" ]; then
-  ARGS=":ci"
+  ARGS="$ARGS:ci"
 fi
 if [ "$opt_start_point" != "" ]; then
   ARGS="$ARGS $opt_start_point"
 fi
 
-/usr/local/bin/npm run test:e2e$ARGS;
+/usr/local/bin/npm run test:e2e$ARGS
