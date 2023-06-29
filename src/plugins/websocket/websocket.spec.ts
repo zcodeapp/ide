@@ -8,6 +8,7 @@ vi.mock('io');
 describe('plugins/websocket/websocket', () => {
   const host = '127.0.0.1';
   const port = '689';
+  const key = '355b5636-3c3e-4e57-97ad-5e1dd40283a2';
   const nameTest = 'package/test';
   const versionTest = '1.0.0-test';
   let webSocket: IWebSocket;
@@ -19,7 +20,7 @@ describe('plugins/websocket/websocket', () => {
         callback();
       }
     });
-    vi.spyOn(instance, 'emit').mockImplementation((event, callback) => {
+    vi.spyOn(instance, 'emit').mockImplementation((event, params, callback) => {
       if (event == 'version') {
         callback({ name: nameTest, version: versionTest });
       }
@@ -28,7 +29,7 @@ describe('plugins/websocket/websocket', () => {
   };
 
   beforeEach(() => {
-    webSocket = websocket(host, port, ioFactory);
+    webSocket = websocket(host, port, key, ioFactory);
   });
 
   it('test instance', () => {
@@ -56,7 +57,7 @@ describe('plugins/websocket/websocket', () => {
   it('test get singleton instance with new configuration', async () => {
     const newHost = 'localhost';
     const newPort = '9000';
-    const _webSocket = websocket(newHost, newPort, ioFactory);
+    const _webSocket = websocket(newHost, newPort, key, ioFactory);
     await _webSocket.connect(undefined, undefined);
     expect(_webSocket.host).toBe(host);
     expect(_webSocket.port).toBe(port);
@@ -71,6 +72,7 @@ describe('plugins/websocket/websocket', () => {
       {
         host: newHost,
         port: newPort,
+        key,
       },
       (version) => {
         versionResult = version;
@@ -87,7 +89,7 @@ describe('plugins/websocket/websocket', () => {
     const test = () => {
       return new Promise((resolve, reject) => {
         try {
-          const instance = websocket(undefined, port, ioFactory);
+          const instance = websocket(undefined, port, key, ioFactory);
           resolve('success');
         } catch (e: any) {
           reject(e.message);
@@ -104,7 +106,7 @@ describe('plugins/websocket/websocket', () => {
     const test = () => {
       return new Promise((resolve, reject) => {
         try {
-          const instance = websocket(host, undefined, ioFactory);
+          const instance = websocket(host, undefined, key, ioFactory);
           resolve('success');
         } catch (e: any) {
           reject(e.message);
@@ -121,7 +123,7 @@ describe('plugins/websocket/websocket', () => {
     const test = () => {
       return new Promise((resolve, reject) => {
         try {
-          const instance = websocket(host, port, undefined);
+          const instance = websocket(host, port, key, undefined);
           resolve('success');
         } catch (e: any) {
           reject(e.message);
@@ -151,7 +153,7 @@ describe('plugins/websocket/websocket', () => {
       });
       return instance;
     };
-    const _webSocket = new WebSocket(host, port, _ioFactory);
+    const _webSocket = new WebSocket(host, port, key, _ioFactory);
 
     const _error = (error) => {
       errorMessageTest = error.message;
@@ -180,7 +182,7 @@ describe('plugins/websocket/websocket', () => {
       });
       return instance;
     };
-    const _webSocket = new WebSocket(host, port, _ioFactory);
+    const _webSocket = new WebSocket(host, port, key, _ioFactory);
 
     const _error = (error) => {
       errorMessageTest = error.message;
@@ -208,7 +210,7 @@ describe('plugins/websocket/websocket', () => {
       });
       return instance;
     };
-    const _webSocket = new WebSocket(host, port, _ioFactory);
+    const _webSocket = new WebSocket(host, port, key, _ioFactory);
 
     const _error = (error) => {
       errorMessageTest = error.message;

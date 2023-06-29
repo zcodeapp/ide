@@ -8,4 +8,3 @@ yarn-error.log*
 coverage
 .nyc_output
 coverage/
-cypress

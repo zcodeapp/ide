@@ -12,13 +12,20 @@ export default boot(async (vue) => {
       store.change(WebSocketStatus.NOT_CONNECTED);
       store.configure(
         import.meta.env.VITE_SERVER_ADDRESS,
-        import.meta.env.VITE_SERVER_PORT
+        import.meta.env.VITE_SERVER_PORT,
+        import.meta.env.VITE_SERVER_KEY
       );
       app.config.globalProperties.$websocket = WebSocket(
         store.host,
         store.port,
-        (uri) => {
-          return io(uri);
+        store.key,
+        async (uri, key) => {
+          return io(uri, {
+            auth: {
+              key,
+            },
+            timeout: import.meta.env.VITE_SERVER_TIMEOUT || 5000,
+          });
         }
       );
     },

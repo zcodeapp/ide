@@ -1,30 +1,38 @@
-import { IVersion, IWebSocket, IWebSocketOptions } from './websocket.interface';
+import {
+  IVersion,
+  IWebSocket,
+  IWebSocketOptions,
+  WebSocketSystemError,
+} from './websocket.interface';
 import { Socket } from 'socket.io-client';
-import { Md5 } from 'ts-md5';
 
 export class WebSocket implements IWebSocket {
-  private instanceIo?: {
-    hash: string;
-    instance: Socket;
-  };
+  private instanceIo?: Socket;
   static instance?: IWebSocket;
 
   constructor(
     public host: string,
     public port: string,
-    private ioFactory: (uri: string) => Promise<Socket>
+    public key: string,
+    private ioFactory: (uri: string, key: string) => Promise<Socket>
   ) {}
 
   static getInstance(
     host?: string,
     port?: string,
-    ioFactory?: (uri: string) => Promise<Socket>
+    key?: string,
+    ioFactory?: (uri: string, key: string) => Promise<Socket>
   ): IWebSocket {
     if (!WebSocket.instance) {
       if (!ioFactory) {
         throw new Error('To get websocket instance configure ioFactory');
       }
-      WebSocket.instance = new WebSocket(host || '', port || '', ioFactory);
+      WebSocket.instance = new WebSocket(
+        host || '',
+        port || '',
+        key || '',
+        ioFactory
+      );
     }
     return WebSocket.instance;
   }
@@ -32,16 +40,24 @@ export class WebSocket implements IWebSocket {
   async connect(
     options?: IWebSocketOptions,
     success?: (version: string) => void,
-    error?: (error: Error) => void
+    error?: <T>(error: Error | T) => void
   ): Promise<void> {
     if (options) {
-      const { host, port } = options;
+      const { host, port, key } = options;
 
       this.host = host;
       this.port = port;
+      this.key = key;
     }
 
-    await this.getIo();
+    await this.mountIo();
+
+    await this.on('system_error', async (e: string) => {
+      if (error) {
+        const _error = JSON.parse(e) as WebSocketSystemError;
+        error(_error);
+      }
+    });
 
     await this.on('connect', async () => {
       await this.emit('version', (v: IVersion) => {
@@ -62,36 +78,31 @@ export class WebSocket implements IWebSocket {
   }
 
   async on<T>(event: string, callback: (...args: T[]) => void): Promise<void> {
-    if (this.instanceIo?.instance) {
-      this.instanceIo.instance.on(event, callback);
+    if (this.instanceIo) {
+      this.instanceIo.on(event, callback);
     }
   }
 
-  async emit<T>(
+  async emit<T, P>(
     event: string,
-    callback: (...args: T[]) => void
+    callback: (...args: T[]) => void,
+    params?: P
   ): Promise<void> {
-    if (this.instanceIo?.instance) {
-      this.instanceIo.instance.emit(event, callback);
+    if (this.instanceIo) {
+      this.instanceIo.emit(event, params || {}, callback);
     }
   }
 
   async close(): Promise<void> {
-    if (this.instanceIo?.instance) {
-      this.instanceIo.instance.close();
+    if (this.instanceIo) {
+      this.instanceIo.close();
       this.instanceIo = undefined;
     }
   }
 
-  private async getIo(): Promise<void> {
+  private async mountIo(): Promise<void> {
     const uri = `${this.host}:${this.port}`;
-    const hash = Md5.hashStr(uri);
-    if (!this.instanceIo?.instance || hash != this.instanceIo?.hash) {
-      this.instanceIo = {
-        hash,
-        instance: await this.ioFactory(uri),
-      };
-    }
+    this.instanceIo = await this.ioFactory(uri, this.key);
   }
 }
 

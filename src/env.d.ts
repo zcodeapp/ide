@@ -7,5 +7,7 @@ declare namespace NodeJS {
     VUE_ROUTER_BASE: string | undefined;
     VITE_IDE_VERSION: string | undefined;
     VITE_SERVER_ADDRESS: string | undefined;
+    VITE_SERVER_PORT: string | undefined;
+    VITE_SERVER_KEY: string | undefined;
   }
 }
