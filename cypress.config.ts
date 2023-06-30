@@ -24,7 +24,7 @@ export default defineConfig({
     supportFile: 'test/cypress/support/e2e.ts',
     specPattern: 'test/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
   },
-  defaultCommandTimeout: 20000,
+  defaultCommandTimeout: 5000,
   env: {
     DOCKER_SERVER_HOSTNAME: process.env.DOCKER_SERVER_HOSTNAME,
     DOCKER_SERVER_PORT: process.env.DOCKER_SERVER_PORT,

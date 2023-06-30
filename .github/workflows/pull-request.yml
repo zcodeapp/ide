@@ -77,6 +77,12 @@ jobs:
       options: --user root
     env:
       NODE_ENV: development
+      VITE_DOMAIN: '${{ secrets.VITE_DOMAIN }}'
+      VITE_IDE_VERSION: '${{ secrets.VITE_IDE_VERSION }}'
+      VITE_PORT: '${{ secrets.VITE_PORT }}'
+      VITE_PROTOCOL: '${{ secrets.VITE_PROTOCOL }}'
+      VITE_SERVER_ADDRESS: '${{ secrets.VITE_SERVER_ADDRESS }}'
+      VITE_SERVER_PORT: '${{ secrets.VITE_SERVER_PORT }}'
     steps:
       - name: Restore Install
         id: cache-install
