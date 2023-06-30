@@ -72,4 +72,4 @@ if [ "$opt_start_point" != "" ]; then
   ARGS="$ARGS $opt_start_point"
 fi
 
-/usr/local/bin/npm run test:e2e$ARGS
+DOCKER_SERVER_HOSTNAME="$DOCKER_SERVER_HOSTNAME" DOCKER_SERVER_PORT="$DOCKER_SERVER_PORT" DOCKER_SERVER_KEY="$DOCKER_SERVER_KEY" /usr/local/bin/npm run test:e2e$ARGS
