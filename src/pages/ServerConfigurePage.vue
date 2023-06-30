@@ -11,6 +11,7 @@
         <q-separator inset />
         <q-card-section>
           <q-input
+            name="address"
             filled
             :disable="lock_fields"
             v-model="data_address"
@@ -20,9 +21,11 @@
                   ?.length || $t('type_valid_address'),
               (val) => (val && val.length > 0) || $t('type_something'),
             ]"
+            :error="inputAddressError"
             :label="$t('server_address_label')"
           />
           <q-input
+            name="port"
             filled
             :disable="lock_fields"
             v-model="data_port"
@@ -35,25 +38,47 @@
                   port: $t('server_port_min'),
                 }),
             ]"
+            :error="inputPortError"
             :label="$t('server_port_label')"
           />
+          <q-input
+            name="key"
+            filled
+            :disable="lock_fields"
+            v-model="data_key"
+            :rules="[(val) => (val && val.length > 0) || $t('type_something')]"
+            :error="inputKeyError"
+            :label="$t('server_key_label')"
+          />
+          <q-banner
+            v-if="inputErrors.length > 0"
+            inline-actions
+            class="text-white bg-red error-message"
+          >
+            <div v-for="error in inputErrors" :key="error">{{ $t(error) }}</div>
+            <template v-slot:action>
+              <q-icon
+                name="close"
+                class="cursor-pointer"
+                @click="closeErrors"
+              />
+            </template>
+          </q-banner>
         </q-card-section>
         <q-card-actions>
-          <q-btn
-            :label="$t('back')"
-            :disable="true"
-            type="button"
-            color="primary"
-            flat
-          />
           <q-space />
           <q-btn
-            :label="$t('next')"
+            name="next"
+            :label="$t(buttonNext.label)"
+            :icon="buttonNext.icon"
             type="button"
-            color="primary"
+            :color="buttonNext.color"
             :loading="lock_fields"
-            :disable="lock_fields || !data_address || !data_port"
+            :disable="
+              lock_fields || !data_address || !data_port || !data_key || success
+            "
             @click="updateData"
+            class="btn_next"
           />
         </q-card-actions>
       </q-card>
@@ -64,6 +89,7 @@
 <script lang="ts">
 import { WebSocketStatus } from '../plugins/websocket/websocket.interface';
 import { defineComponent } from 'vue';
+import { WebSocketSystemError } from '../plugins/websocket/websocket.interface';
 
 export default defineComponent({
   name: 'ServerConfigurePage',
@@ -74,30 +100,102 @@ export default defineComponent({
   methods: {
     async updateData() {
       this.lock_fields = true;
-      this.$websocketStore.configure(this.data_address, String(this.data_port));
+      this.inputErrors = [];
+      this.inputKeyError = false;
+      this.inputAddressError = false;
+      this.inputPortError = false;
+      this.$websocketStore.configure(
+        this.data_address,
+        String(this.data_port),
+        this.data_key
+      );
       this.$websocketStore.change(WebSocketStatus.IS_CONNECTING);
+
+      const error = (error: Error & WebSocketSystemError) => {
+        console.log('error', { error });
+        this.$websocketStore.change(WebSocketStatus.HAVE_ERROR);
+        this.lock_fields = false;
+        if (error.context && typeof error.context == 'string') {
+          if (error.context == 'connect') {
+            if (error.message == 'server_key_not_valid') {
+              this.inputKeyError = true;
+            }
+            this.inputErrors.push(error.message);
+          }
+        } else {
+          let errorMessage = error.message;
+          if (errorMessage == 'xhr poll error') {
+            errorMessage = 'server_address_port_error';
+            this.inputAddressError = true;
+            this.inputPortError = true;
+          }
+          if (errorMessage == 'timeout') {
+            errorMessage = 'server_timeout_error';
+            this.inputAddressError = true;
+            this.inputPortError = true;
+          }
+          this.inputErrors.push(errorMessage);
+        }
+      };
+
       await this.$websocket.connect(
         {
           host: this.data_address,
           port: String(this.data_port),
+          key: this.data_key,
         },
         (version: string) => {
           this.$websocketStore.change(WebSocketStatus.IS_CONNECTED);
           this.$websocketStore.changeVersion(version);
           this.lock_fields = false;
+          this.buttonDone();
         },
-        () => {
-          this.$websocketStore.change(WebSocketStatus.HAVE_ERROR);
-          this.lock_fields = false;
-        }
+        error
       );
     },
+    closeErrors() {
+      this.inputErrors = [];
+    },
+    buttonDone() {
+      this.success = true;
+      this.buttonNext = {
+        label: 'done',
+        icon: 'done',
+        color: 'green',
+      };
+      setTimeout(() => {
+        this.success = false;
+        this.buttonNext = {
+          label: 'connect',
+          icon: 'chevron_right',
+          color: 'primary',
+        };
+        this.$router.replace('/server/prepare');
+      }, 1000);
+    },
+  },
+  beforeMount() {
+    const state = this.$websocketStore.currentState();
+    if (state == WebSocketStatus.IS_CONNECTED) {
+      this.$router.replace('/server/prepare');
+    }
   },
   data() {
     return {
       lock_fields: false,
       data_address: this.$websocketStore.host,
       data_port: Number(this.$websocketStore.port),
+      data_key: this.$websocketStore.key,
+      inputKeyError: false,
+      inputAddressError: false,
+      inputPortError: false,
+      success: false,
+      inputErrors: [],
+      buttonNext: {
+        label: 'connect',
+        icon: 'chevron_right',
+        color: 'primary',
+      },
     };
   },
 });
@@ -107,5 +205,7 @@ export default defineComponent({
 .server-configure {
   min-width: 600px;
   max-width: 800px;
+}
+.q-banner-item {
 }
 </style>

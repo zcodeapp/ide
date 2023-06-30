@@ -66,4 +66,4 @@ if [ "$opt_start_point" != "" ]; then
 fi
 
 mkdir -p ~/.cache/Cypress
-docker compose run -it --rm node_cypress -c "bin/node/test_unit$ARGS"
+docker compose run -it --rm node_cli -c "bin/node/test_unit$ARGS"

@@ -13,6 +13,9 @@ usage() {
   printf -- "[-c] "
   printf -- "-e=<env> "
   printf -- "[-n=<start_point>] "
+  printf -- "[-s=<server_host>] "
+  printf -- "[-p=<server_port>] "
+  printf -- "[-k=<server_key>] "
   printf "\n"
 
   printf "  -%s\t%s - %s%s\n" "h" "help" "Show this help message." ""
@@ -20,6 +23,9 @@ usage() {
   printf "  -%s\t%s - %s%s\n" "e" "env" "Environment" " (default: dev)"
   printf "  -%s\t%s - %s%s\n" "c" "ci" "Is CI execution" ""
   printf "  -%s\t%s - %s%s\n" "n" "start_point" "File or Directory for start point tests" ""
+  printf "  -%s\t%s - %s%s\n" "s" "server_host" "Server host websocket for tests" ""
+  printf "  -%s\t%s - %s%s\n" "p" "server_port" "Server port websocket for tests" ""
+  printf "  -%s\t%s - %s%s\n" "k" "server_key" "Server key websocket for tests" ""
 }
 
 version() {
@@ -32,11 +38,14 @@ opt_version="false"
 opt_ci="false"
 opt_env="dev"
 opt_start_point=""
+opt_server_host="localhost"
+opt_server_port="4000"
+opt_server_key="355b5636-3c3e-4e57-97ad-5e1dd40283a2"
 
 # declared functions
 
 # option parsing
-OPTSPEC=:hve:cn:
+OPTSPEC=:hve:cn:s:p:k:
 while getopts $OPTSPEC option; do
   case "$option" in
     h ) opt_help="true"; usage; exit 0  ;;
@@ -44,6 +53,9 @@ while getopts $OPTSPEC option; do
     e ) opt_env=$OPTARG;  ;;
     c ) opt_ci="true";  ;;
     n ) opt_start_point=$OPTARG;  ;;
+    s ) opt_server_host=$OPTARG;  ;;
+    p ) opt_server_port=$OPTARG;  ;;
+    k ) opt_server_key=$OPTARG;  ;;
    \? ) echo "Unknown option: -$OPTARG" >&2; exit 1;;
     : ) echo "Missing option argument for -$OPTARG" >&2; exit 1;;
     * ) echo "Unimplemented option: -$OPTARG" >&2; exit 1;;
@@ -53,6 +65,18 @@ shift $((OPTIND - 1))
 
 # required option validation
 if [ -z "$opt_env" ] ; then
+  usage
+  exit 1
+fi
+if [ -z "$opt_server_host" ] ; then
+  usage
+  exit 1
+fi
+if [ -z "$opt_server_port" ] ; then
+  usage
+  exit 1
+fi
+if [ -z "$opt_server_key" ] ; then
   usage
   exit 1
 fi
@@ -66,4 +90,11 @@ if [ "$opt_start_point" != "" ]; then
 fi
 
 mkdir -p ~/.cache/Cypress
-docker compose run -it --rm node_cypress -c "bin/node/test_e2e$ARGS"
+docker compose run \
+  -e DOCKER_SERVER_HOSTNAME=$opt_server_host \
+  -e DOCKER_SERVER_PORT=$opt_server_port \
+  -e DOCKER_SERVER_KEY=$opt_server_key \
+  -it \
+  --rm \
+  node_cypress \
+    -c "bin/node/test_e2e$ARGS"

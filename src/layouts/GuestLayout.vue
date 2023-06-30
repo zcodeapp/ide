@@ -47,12 +47,12 @@ export default defineComponent({
       this.$websocketStore
     );
     return {
-      connected: connected,
-      connecting: connecting,
-      error: error,
-      host: host,
-      port: port,
-      version: version,
+      connected,
+      connecting,
+      error,
+      host,
+      port,
+      version,
     };
   },
 });

@@ -11,14 +11,18 @@ usage() {
   printf -- "[-i <image name>] "
   printf -- "[-r <image version>] "
   printf -- "[-c <container name>] "
+  printf -- "[-b <container backend name>] "
   printf -- "[-e <env>] "
   printf -- "[-h] "
   printf -- "[-v] "
   printf "\n"
 
+  # test_container_backend
+
   printf "  -%s\t%s - %s%s\n" "i" "image" "Image name" ""
   printf "  -%s\t%s - %s%s\n" "r" "imageversion" "Image version" ""
   printf "  -%s\t%s - %s%s\n" "c" "container" "Container name" ""
+  printf "  -%s\t%s - %s%s\n" "b" "container_backend" "Container backend name" ""
   printf "  -%s\t%s - %s%s\n" "h" "help" "Show this help message." ""
   printf "  -%s\t%s - %s%s\n" "v" "version" "Show version information." ""
   printf "  -%s\t%s - %s%s\n" "e" "env" "Environment" " (default: dev)"
@@ -35,11 +39,12 @@ opt_env="development"
 opt_image="zcodeapp/ide"
 opt_imageversion="latest"
 opt_container="test_container"
+opt_container_backend="test_container_backend"
 
 # declared functions
 
 # option parsing
-OPTSPEC=:hvi:e:c:mip
+OPTSPEC=:hvi:e:c:b:mip
 while getopts $OPTSPEC option; do
   case "$option" in
     h ) opt_help="true"; usage; exit 0  ;;
@@ -48,6 +53,7 @@ while getopts $OPTSPEC option; do
     i ) opt_image=$OPTARG;  ;;
     r ) opt_imageversion=$OPTARG;  ;;
     c ) opt_container=$OPTARG;  ;;
+    b ) opt_container_backend=$OPTARG;  ;;
    \? ) echo "Unknown option: -$OPTARG" >&2; exit 1;;
     : ) echo "Missing option argument for -$OPTARG" >&2; exit 1;;
     * ) echo "Unimplemented option: -$OPTARG" >&2; exit 1;;
@@ -61,6 +67,10 @@ if [ -z "$opt_env" ] ; then
   exit 1
 fi
 if [ -z "$opt_container" ] ; then
+  usage
+  exit 1
+fi
+if [ -z "$opt_container_backend" ] ; then
   usage
   exit 1
 fi
@@ -80,25 +90,35 @@ docker ps
 
 echo "opt_container"
 echo $opt_container
+echo "opt_container_backend"
+echo $opt_container_backend
 
 DOCKER_CONTAINER_ID=$(docker ps -aqf "name=$opt_container")
+DOCKER_CONTAINER_SERVER_ID=$(docker ps -aqf "name=$opt_container_backend")
 
 echo "DOCKER_CONTAINER_ID"
 echo $DOCKER_CONTAINER_ID
+echo "DOCKER_CONTAINER_SERVER_ID"
+echo $DOCKER_CONTAINER_SERVER_ID
 
-echo "command"
+echo "command DOCKER_CONTAINER_ID"
 echo "docker exec --user=root $DOCKER_CONTAINER_ID /bin/bash -c \"hostname -i\""
+echo "command DOCKER_CONTAINER_SERVER_ID"
+echo "docker exec --user=root $DOCKER_CONTAINER_SERVER_ID /bin/bash -c \"hostname -i\""
 
 DOCKER_HOSTNAME=$(docker exec --user=root $DOCKER_CONTAINER_ID /bin/sh -c "hostname -i")
+DOCKER_HOSTNAME_SERVER=$(docker exec --user=root $DOCKER_CONTAINER_SERVER_ID /bin/sh -c "hostname -i")
 
 echo "DOCKER_HOSTNAME"
 echo $DOCKER_HOSTNAME
+echo "DOCKER_HOSTNAME_SERVER"
+echo $DOCKER_HOSTNAME_SERVER
 
 echo "Image content"
 docker exec $DOCKER_CONTAINER_ID /bin/sh -c "ls -la /usr/share/nginx/html"
+echo "Image content"
+docker exec $DOCKER_CONTAINER_SERVER_ID /bin/sh -c "ls -la /var/www"
 
-DOCKER_HOST="$DOCKER_HOSTNAME"
-
-bin/docker/node/online.js $DOCKER_HOST
-CYPRESS_HOST_TEST=$DOCKER_HOST bin/node/test_e2e -c -o
+bin/docker/node/online.js $DOCKER_HOSTNAME
+CYPRESS_HOST_TEST=$DOCKER_HOSTNAME DOCKER_SERVER_HOSTNAME="$DOCKER_HOSTNAME_SERVER" DOCKER_SERVER_PORT="4000" DOCKER_SERVER_KEY="355b5636-3c3e-4e57-97ad-5e1dd40283a2" bin/node/test_e2e -c -o
 exit 0

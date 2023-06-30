@@ -77,6 +77,12 @@ jobs:
       options: --user root
     env:
       NODE_ENV: development
+      VITE_DOMAIN: '${{ secrets.VITE_DOMAIN }}'
+      VITE_IDE_VERSION: '${{ secrets.VITE_IDE_VERSION }}'
+      VITE_PORT: '${{ secrets.VITE_PORT }}'
+      VITE_PROTOCOL: '${{ secrets.VITE_PROTOCOL }}'
+      VITE_SERVER_ADDRESS: '${{ secrets.VITE_SERVER_ADDRESS }}'
+      VITE_SERVER_PORT: '${{ secrets.VITE_SERVER_PORT }}'
     steps:
       - name: Restore Install
         id: cache-install
@@ -90,6 +96,12 @@ jobs:
         with:
           path: /github/home/.cache
           key: ${{ runner.os }}-install-cache-${{ github.sha }}
+      - name: Start ZCode Server
+        uses: zcodeapp/ide-server-github-action@1.3.0
+        with:
+          ide-server-container-name: test_container_backend
+          ide-rate-points: 100
+          ide-rate-duration: 1
       - name: Test
         run: "bin/ci/test_e2e -e development"
     
@@ -184,5 +196,11 @@ jobs:
         uses: zcodeapp/ide-github-action@1.0.1
         with:
           ide-version: test_version
+      - name: Start ZCode Server
+        uses: zcodeapp/ide-server-github-action@1.3.0
+        with:
+          ide-server-container-name: test_container_backend
+          ide-rate-points: 100
+          ide-rate-duration: 1
       - name: Test Image
         run: "bin/ci/test_container -e development"

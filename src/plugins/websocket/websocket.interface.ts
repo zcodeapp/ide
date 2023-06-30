@@ -8,6 +8,7 @@ export enum WebSocketStatus {
 export interface IWebSocketOptions {
   host: string;
   port: string;
+  key: string;
 }
 
 export interface IVersion {
@@ -20,11 +21,18 @@ export interface IVersion {
 export interface IWebSocket {
   host: string;
   port: string;
+  key: string;
   connect(
     options?: IWebSocketOptions,
     success?: (version: string) => void,
-    error?: (error: Error) => void
+    error?: <T>(error: Error | T) => void
   ): Promise<void>;
   on<T>(event: string, callback: (...args: T[]) => void): Promise<void>;
   emit<T>(event: string, callback: (...args: T[]) => void): Promise<void>;
+}
+
+export interface WebSocketSystemError {
+  context: string;
+  message: string;
+  params?: { [name: string]: string };
 }

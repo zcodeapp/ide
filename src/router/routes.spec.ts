@@ -5,8 +5,8 @@ vi.mock('vue-i18n');
 vi.mock('layouts/GuestLayout.vue');
 vi.mock('vue-router', () => {
   return {
-    RouteRecordRaw: {}
-  }
+    RouteRecordRaw: {},
+  };
 });
 vi.mock('pinia', () => {
   return {

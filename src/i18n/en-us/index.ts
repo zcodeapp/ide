@@ -2,6 +2,8 @@ export default {
   back: 'Back',
   next: 'Next',
   reset: 'Reset',
+  done: 'Done',
+  connect: 'Connect',
   version: 'Version: {version}',
   language: 'Language',
   zcode_title: 'ZCode App',
@@ -15,8 +17,14 @@ export default {
   server_select_description: 'Configure server to run ZCode IDE',
   server_address_label: 'Server address',
   server_port_label: 'Server port',
+  server_key_label: 'Server key',
   server_port_min: '80',
   server_port_min_label: 'Minimal port is {port}',
   not_found_page_title: 'Oops. Nothing here...',
   go_home: 'Go Home',
+  server_key_not_valid: 'Server key not valid',
+  server_address_port_error: 'The server address or port is incorrect',
+  server_many_connections:
+    'Too many connection attempts. You will be blocked for a few minutes',
+  server_timeout_error: 'Could not connect to the server. Timeout',
 };
